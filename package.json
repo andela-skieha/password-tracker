@@ -1,0 +1,23 @@
+{
+  "name": "password-tracker",
+  "version": "1.0.0",
+  "description": "password tracker",
+  "main": "index.js",
+  "scripts": {
+		"start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-skieha/password-tracker.git"
+  },
+  "author": "Njeri Kieha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-skieha/password-tracker/issues"
+  },
+  "homepage": "https://github.com/andela-skieha/password-tracker#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
