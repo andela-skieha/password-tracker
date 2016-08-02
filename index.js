@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 
 // get dependencies
-var app = require('express')();
+var express = require('express');
 var Sequelize = require('sequelize');
+var bodyParser = require('body-parser');
+var app = express();
+app.use(bodyParser());
 
 // sequelize initialization
 var sequelize = new Sequelize('postgres://njerikieha:njerikieha@localhost:5432/passwordtracker');
@@ -27,24 +30,26 @@ var User = sequelize.define('user', {
 	}
 });
 
-// sync model with db, force: true drops the db if it already exists
-sequelize.sync({force: true}).then(function() {
-	return User.create({
-		username: 'njeri',
-		password: 'secret'
-	}).then(function() {
-		User.find({
-			where: {username: 'njeri'}
-		}).then(function(njeri) {
-			console.log('Hello ' + njeri.username);
-		});
+var createUser = function(req, res) {
+	var newUser = {
+		username: req.body.username,
+		password: req.body.password
+	};
+	User.create(newUser).then(function() {
+		res.sendStatus(200);
 	});
-});
+};
 
-// handle request and response
-app.get('/', function(req, res) {
-	res.send({name: 'Hello World'});
-});
+var getUser = function(req, res) {
+	User.findAll().then(function(users) {
+		res.send(users);
+	});
+};
 
-// initialize a port
-app.listen(5000);
+// sync model with db
+sequelize.sync().then(function() {
+	app.get('/users', getUser);
+	app.post('/users', createUser);
+	// initialize a port
+	app.listen(5000);
+});
